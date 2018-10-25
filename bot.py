@@ -100,6 +100,20 @@ coop_soup = bs(coop_html, "html.parser")
 coop_cents = coop_soup.find('span', {'class':'sup'}).get_text()
 coop_price = float('0.' + coop_cents)
 
+# DIRK
+dirk_url = "https://www.dirk.nl/boodschappen/dranken-sap-koffie-thee/bier/de-klok-bier/1959"
+driver.get(dirk_url)
+
+try:
+    myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'product-card__price__cents')))
+except TimeoutException:
+    print("Loading took too much time!")
+
+dirk_html = driver.page_source
+dirk_soup = bs(dirk_html, "html.parser")
+dirk_cents = dirk_soup.find('span', {'class':'product-card__price__cents'}).get_text()
+dirk_price = float('0.' + dirk_cents)
+
 driver.close()
 
 print('AH: ' + str(ah_price) + ' euro')
@@ -108,3 +122,4 @@ print('Hoogvliet: ' + str(hoogvliet_price) + ' euro')
 print('PLUS: ' + str(plus_price) + ' euro')
 print('DEEN: ' + str(deen_price) + ' euro')
 print('COOP: ' + str(coop_price) + ' euro')
+print('Dirk: ' + str(dirk_price) + ' euro')

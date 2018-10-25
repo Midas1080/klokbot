@@ -67,7 +67,7 @@ except TimeoutException:
     print("Loading took too much time!")
 
 plus_html = driver.page_source
-plus_soup = bs(plus_html)
+plus_soup = bs(plus_html, "html.parser")
 plus_price = float(plus_soup.find('span', {'class':'price-range__strikethrough'}).get_text())
 #<span class="price-range__strikethrough">0.65</span>
 
@@ -81,7 +81,7 @@ except TimeoutException:
     print("Loading took too much time!")
 
 deen_html = driver.page_source
-deen_soup = bs(deen_html)
+deen_soup = bs(deen_html, "html.parser")
 deen_cents = deen_soup.find('sup', {'class':'c-price__cents'}).get_text()
 deen_price = float('0.' + deen_cents)
 #<sup class="c-price__cents">60</sup>
@@ -96,7 +96,7 @@ except TimeoutException:
     print("Loading took too much time!")
 
 coop_html = driver.page_source
-coop_soup = bs(coop_html)
+coop_soup = bs(coop_html, "html.parser")
 coop_cents = coop_soup.find('span', {'class':'sup'}).get_text()
 coop_price = float('0.' + coop_cents)
 

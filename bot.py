@@ -40,9 +40,9 @@ except TimeoutException:
 jumbo_html = driver.page_source
 jumbo_soup = bs(jumbo_html, "html.parser")
 jumbo_price = jumbo_soup.find('input', {'id':'PriceInCents_48039BLK'}).get('jum-data-price')
-
 #<input type="hidden" value="061" name="PriceInCents_48039BLK" jum-data-price="0.61" id="PriceInCents_48039BLK">
 
+# Hoogvliet
 hoogvliet_url = "https://www.hoogvliet.com/product/de-klok-blik?tracking=searchterm:de+klok"
 driver.get(hoogvliet_url)
 
@@ -57,8 +57,54 @@ hoogvliet_integer = hoogvliet_soup.find('span', {'class':'price-euros'})
 hoogvliet_fractional = hoogvliet_soup.find('span', {'class':'price-cents'})
 hoogvliet_price =  float(hoogvliet_integer.get_text() + hoogvliet_fractional.get_text())
 
+# PLUS
+plus_url = "https://www.plus.nl/product/de-klok-bier-blik-33-cl-694894"
+driver.get(plus_url)
+
+try:
+    myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'price-range__strikethrough')))
+except TimeoutException:
+    print("Loading took too much time!")
+
+plus_html = driver.page_source
+plus_soup = bs(plus_html)
+plus_price = float(plus_soup.find('span', {'class':'price-range__strikethrough'}).get_text())
+#<span class="price-range__strikethrough">0.65</span>
+
+# DEEN
+deen_url = "https://www.deen.nl/product/de-klok-bier-blik-50-cl"
+driver.get(deen_url)
+
+try:
+    myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'c-productdetail')))
+except TimeoutException:
+    print("Loading took too much time!")
+
+deen_html = driver.page_source
+deen_soup = bs(deen_html)
+deen_cents = deen_soup.find('sup', {'class':'c-price__cents'}).get_text()
+deen_price = float('0.' + deen_cents)
+#<sup class="c-price__cents">60</sup>
+
+# COOP
+coop_url = "https://www.coop.nl/de-klok-blik/product/8716700016358"
+driver.get(coop_url)
+
+try:
+    myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'price')))
+except TimeoutException:
+    print("Loading took too much time!")
+
+coop_html = driver.page_source
+coop_soup = bs(coop_html)
+coop_cents = coop_soup.find('span', {'class':'sup'}).get_text()
+coop_price = float('0.' + coop_cents)
+
 driver.close()
 
 print('AH: ' + str(ah_price) + ' euro')
 print('Jumbo: ' + str(jumbo_price) + ' euro')
 print('Hoogvliet: ' + str(hoogvliet_price) + ' euro')
+print('PLUS: ' + str(plus_price) + ' euro')
+print('DEEN: ' + str(deen_price) + ' euro')
+print('COOP: ' + str(coop_price) + ' euro')
